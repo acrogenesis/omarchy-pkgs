@@ -172,6 +172,9 @@ package() {
   # ~/.config/mimeapps.list, and ~/.config/systemd/user can all override these.
   install -Dm644 default/uwsm/env.d/10-omarchy "$pkgdir/usr/share/uwsm/env.d/10-omarchy"
   install -Dm644 default/environment.d/10-omarchy-fcitx.conf "$pkgdir/usr/lib/environment.d/10-omarchy-fcitx.conf"
+  if [[ -f default/systemd/user/podman-restart.service.d/10-local.conf ]]; then
+    install -Dm644 default/systemd/user/podman-restart.service.d/10-local.conf "$pkgdir/usr/lib/systemd/user/podman-restart.service.d/10-local.conf"
+  fi
   # Allow this recipe to build source revisions from before the Podman switch.
   if [[ -f default/systemd/user-environment-generators/60-omarchy-podman ]]; then
     install -Dm755 default/systemd/user-environment-generators/60-omarchy-podman "$pkgdir/usr/lib/systemd/user-environment-generators/60-omarchy-podman"
