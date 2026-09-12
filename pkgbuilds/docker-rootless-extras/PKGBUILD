@@ -6,7 +6,7 @@
 
 pkgname=docker-rootless-extras
 pkgver=29.8.0
-pkgrel=1
+pkgrel=1.1
 pkgdesc="Extras to run docker as non-root."
 arch=('any')
 url="https://docs.docker.com/engine/security/rootless/"
@@ -56,6 +56,8 @@ package() {
   : "${srcdir:?}"
 
   install -Dm755 "$srcdir/dockerd-rootless-${pkgver}.sh" "$pkgdir/usr/bin/dockerd-rootless.sh"
+  install -Dm755 "$srcdir/dockerd-rootless-setuptool-$pkgver.sh" \
+    "$pkgdir/usr/bin/dockerd-rootless-setuptool.sh"
   install -Dm644 "$srcdir/docker.socket" "$pkgdir/usr/lib/systemd/user/docker.socket"
   install -Dm644 "$srcdir/99-docker-rootless.conf" "$pkgdir/usr/lib/sysctl.d/99-docker-rootless.conf"
 
@@ -73,8 +75,8 @@ package() {
     sed 's| $DOCKERD_ROOTLESS_SH_FLAGS||' \
     > "$pkgdir/usr/lib/systemd/user/docker.service"
 
-  # Remove the $PATH override, since this will be dependant on $PATH at build
-  # time and is usually undesirable.
-  # TODO: Patch this upstream.
-  sed -i '/Environment=PATH=/d' "$pkgdir/usr/lib/systemd/user/docker.service"
+  # RootlessKit and dockerd-rootless.sh resolve runtime helpers through PATH.
+  # Keep user-writable session paths out of the long-lived daemon boundary.
+  sed -i '/Environment=PATH=/d; /^\[Service\]$/a Environment=PATH=/usr/bin\nEnvironment=XDG_CONFIG_HOME=%h/.config' \
+    "$pkgdir/usr/lib/systemd/user/docker.service"
 }
