@@ -333,6 +333,19 @@ EOF
   # live root config.
   install -d "$pkgdir/usr/share/omarchy/default"
   cp -a default/. "$pkgdir/usr/share/omarchy/default/"
+  # Rootless migration executes these package-owned helpers across privilege
+  # boundaries. Local source modes must not affect their trust checks.
+  if [[ -d default/docker/rootless ]]; then
+    local helper_directory helper
+    for helper_directory in usr usr/share usr/share/omarchy usr/share/omarchy/default usr/share/omarchy/default/docker usr/share/omarchy/default/docker/rootless; do
+      chmod 0755 "$pkgdir/$helper_directory"
+      chown 0:0 "$pkgdir/$helper_directory"
+    done
+    for helper in migrate.py rootful-listeners.py volume-manifest.py; do
+      install -m 0644 "default/docker/rootless/$helper" "$pkgdir/usr/share/omarchy/default/docker/rootless/$helper"
+      chown 0:0 "$pkgdir/usr/share/omarchy/default/docker/rootless/$helper"
+    done
+  fi
   # The Limine template is read by the x86_64 ISO orchestrator only.
   if [[ $CARCH == aarch64 ]]; then
     rm -rf "$pkgdir/usr/share/omarchy/default/limine"
