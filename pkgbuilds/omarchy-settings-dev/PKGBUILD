@@ -194,6 +194,10 @@ package() {
   ln -sfn /usr/share/fontconfig/conf.avail/50-omarchy.conf "$pkgdir/etc/fonts/conf.d/50-omarchy.conf"
   install -Dm644 default/xdg-terminal-exec/hyprland-xdg-terminals.list "$pkgdir/usr/share/xdg-terminal-exec/hyprland-xdg-terminals.list"
   install -Dm644 default/applications/mimeapps.list "$pkgdir/usr/share/applications/mimeapps.list"
+  # Rootless ONCE is optional; ship its unit without enabling it.
+  if [[ -f default/systemd/user/omarchy-once.service ]]; then
+    install -Dm644 default/systemd/user/omarchy-once.service "$pkgdir/usr/lib/systemd/user/omarchy-once.service"
+  fi
   install -Dm644 default/systemd/user/bt-agent.service "$pkgdir/usr/lib/systemd/user/bt-agent.service"
   install -Dm644 default/systemd/user/omarchy-sleep-lock.service "$pkgdir/usr/lib/systemd/user/omarchy-sleep-lock.service"
   install -Dm644 default/systemd/user/omarchy-recover-internal-monitor.service "$pkgdir/usr/lib/systemd/user/omarchy-recover-internal-monitor.service"
