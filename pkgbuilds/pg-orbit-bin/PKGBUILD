@@ -14,7 +14,7 @@ provides=('pg-orbit')
 conflicts=('pg-orbit')
 options=('!strip' '!debug')
 source=("https://github.com/acrogenesis/pg-orbit-releases/releases/download/v${pkgver}/pg-orbit-${pkgver}-linux-x64.tar.gz")
-sha256sums=('dab1857d7f00e1ba5d8035d39e520f57154f38edb329d275576b0151a5fcc780')
+sha256sums=('b11c79b17d82d1a9950dee6f54a9dc77dbbf1ac9f7d2755c9e34cef71af966af')
 
 package() {
   cd "pg-orbit-${pkgver}"
