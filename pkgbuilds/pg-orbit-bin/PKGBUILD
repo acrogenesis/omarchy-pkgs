@@ -1,6 +1,6 @@
 # Maintainer: acrogenesis <adrian.rangel@gmail.com>
 pkgname=pg-orbit-bin
-pkgver=2.6.0
+pkgver=2.6.1
 pkgrel=1
 pkgdesc='PostgreSQL client for browsing, querying, and managing databases'
 arch=('x86_64')
@@ -14,7 +14,7 @@ provides=('pg-orbit')
 conflicts=('pg-orbit')
 options=('!strip' '!debug')
 source=("https://github.com/acrogenesis/pg-orbit-releases/releases/download/v${pkgver}/pg-orbit-${pkgver}-linux-x64.tar.gz")
-sha256sums=('b11c79b17d82d1a9950dee6f54a9dc77dbbf1ac9f7d2755c9e34cef71af966af')
+sha256sums=('485101280fce98e9d6c583a836b6ab04f641d4292bd0934f438df3f44ebd043e')
 
 package() {
   cd "pg-orbit-${pkgver}"
